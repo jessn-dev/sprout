@@ -9,6 +9,11 @@
 
 # 🌱 Sprout - The Custom Spring Initializer
 
+[![Go Version](https://img.shields.io/github/go-mod/go-version/jessn-dev/sprout?style=flat-square)](https://github.com/jessn-dev/sprout)
+[![Release](https://img.shields.io/github/v/release/jessn-dev/sprout?style=flat-square)](https://github.com/jessn-dev/sprout/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jessn-dev/sprout/test.yml?branch=main&style=flat-square)](https://github.com/jessn-dev/sprout/actions)
+[![License](https://img.shields.io/github/license/jessn-dev/sprout?style=flat-square)](https://github.com/jessn-dev/sprout/blob/main/LICENSE)
+
 Hey there! 👋 Welcome to **Sprout**.
 
 If you've ever started a Spring Boot project, you know the drill: head to `start.spring.io`, pick your dependencies, download the zip, extract it, and *then* spend the next hour configuring Docker, Redis, databases, and writing boilerplate.
