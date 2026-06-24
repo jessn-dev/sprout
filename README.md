@@ -54,15 +54,18 @@ go install github.com/jessn-dev/sprout/cmd/sprout@latest
 Sprout offers several commands depending on what you need:
 
 1. **The Main Setup (`sprout`)**
+   ![Sprout Main TUI](resources/img.png)
    Just run `sprout` in your terminal. This opens the main TUI where you can set up your project metadata and search through live Spring Boot dependencies. You can generate a full application or just a standalone module (it even has options to strip out `mvnw`/`gradlew` so it nests cleanly into your existing repo).
 
 2. **⚡️ Accelerated Setup With Quick Interactivity (`sprout quick`)**
+   ![Sprout Quick](resources/img_1.png)
    If you just need a standard project *right now* and don't want to dig through menus, this is your command. It asks you for a project name and what type of template you want (Standard, Cloud, or Security) and immediately generates the project using standard sensible defaults (Java 21, Gradle, Latest Boot Version).
    ```bash
    sprout quick
    ```
 
 3. **🧭 Discoverability and Exploration (`sprout explore`)**
+   ![Sprout Explore](resources/img_2.png)
    Navigating the Spring ecosystem can be overwhelming for new devs. This command helps you explore the ecosystem without leaving your terminal. It opens a terminal browser where you can search, read descriptions, and view explanations for every single dependency available on `start.spring.io`.
    ```bash
    sprout explore
