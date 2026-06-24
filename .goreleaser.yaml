@@ -18,11 +18,11 @@ builds:
       - amd64
       - arm64
 archives:
-  - format: tar.gz
+  - formats: [tar.gz]
     # Use zip for windows archives
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [zip]
 checksum:
   name_template: 'checksums.txt'
 brews:
