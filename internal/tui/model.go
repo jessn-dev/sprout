@@ -37,6 +37,8 @@ var (
 		{"21", "21"},
 		{"23", "23"},
 		{"24", "24"},
+		{"25", "25"},
+		{"26", "26"},
 	}
 	projectTypes = []option{
 		{"standard", "Spring Boot (Standard)"},
@@ -72,6 +74,7 @@ type Model struct {
 	Generate bool
 
 	bootVersions []generator.BootVersion
+	javaVers     []option
 	allDeps      []generator.Dependency
 
 	focus int
@@ -94,6 +97,7 @@ func NewModel(md *generator.Metadata) *Model {
 	m := &Model{
 		selJava:     1, // 21
 		depSelected: map[string]bool{},
+		javaVers:    javaVersions, // fallback list
 	}
 
 	if md != nil {
@@ -105,6 +109,16 @@ func NewModel(md *generator.Metadata) *Model {
 			if v.ID == ga {
 				m.selBoot = i
 				break
+			}
+		}
+		// Java versions from live metadata, defaulting to the server default.
+		if len(md.JavaVersions) > 0 {
+			m.javaVers = nil
+			for i, jv := range md.JavaVersions {
+				m.javaVers = append(m.javaVers, option{jv, jv})
+				if jv == md.JavaDefault {
+					m.selJava = i
+				}
 			}
 		}
 	}
@@ -274,7 +288,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case fPack:
 			m.cycleKey(key, &m.selPack, len(packagings))
 		case fJava:
-			m.cycleKey(key, &m.selJava, len(javaVersions))
+			m.cycleKey(key, &m.selJava, len(m.javaVers))
 		case fBoot:
 			m.cycleKey(key, &m.selBoot, len(m.bootVersions))
 		case fType:
@@ -340,7 +354,7 @@ func (m *Model) commit() {
 	m.Config.BuildTool = buildTools[m.selBuild].value
 	m.Config.Language = languages[m.selLang].value
 	m.Config.Packaging = packagings[m.selPack].value
-	m.Config.JavaVersion = javaVersions[m.selJava].value
+	m.Config.JavaVersion = m.javaVers[m.selJava].value
 	m.Config.BootVersion = m.bootVersionID()
 	m.Config.ProjectType = projectTypes[m.selType].value
 	m.Config.GroupId = m.inputs[0].Value()
@@ -485,7 +499,7 @@ func (m *Model) renderMetadata() string {
 		b.WriteString(m.inputRow(r.label, r.idx) + "\n")
 	}
 	b.WriteString(m.selectRow("Packaging", packagings[m.selPack].label, m.focus == fPack) + "\n")
-	b.WriteString(m.selectRow("Java Version", javaVersions[m.selJava].label, m.focus == fJava) + "\n")
+	b.WriteString(m.selectRow("Java Version", m.javaVers[m.selJava].label, m.focus == fJava) + "\n")
 	b.WriteString(m.selectRow("Boot Version", m.bootVersions[m.selBoot].Name, m.focus == fBoot) + "\n")
 	return b.String()
 }

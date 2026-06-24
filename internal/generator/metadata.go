@@ -26,6 +26,8 @@ type Dependency struct {
 type Metadata struct {
 	BootDefault  string
 	BootVersions []BootVersion
+	JavaDefault  string
+	JavaVersions []string
 	Dependencies []Dependency
 }
 
@@ -34,6 +36,12 @@ type rawMetadata struct {
 		Default string        `json:"default"`
 		Values  []BootVersion `json:"values"`
 	} `json:"bootVersion"`
+	JavaVersion struct {
+		Default string `json:"default"`
+		Values  []struct {
+			ID string `json:"id"`
+		} `json:"values"`
+	} `json:"javaVersion"`
 	Dependencies struct {
 		Values []struct {
 			Name   string `json:"name"`
@@ -72,6 +80,10 @@ func FetchMetadata() (*Metadata, error) {
 	md := &Metadata{
 		BootDefault:  raw.BootVersion.Default,
 		BootVersions: raw.BootVersion.Values,
+		JavaDefault:  raw.JavaVersion.Default,
+	}
+	for _, j := range raw.JavaVersion.Values {
+		md.JavaVersions = append(md.JavaVersions, j.ID)
 	}
 	for _, group := range raw.Dependencies.Values {
 		for _, d := range group.Values {

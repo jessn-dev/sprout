@@ -81,6 +81,7 @@ type Config struct {
 	JavaVersion string
 	ProjectType string
 	Deps        []string
+	SkipSamples bool // omit the sample HelloController
 }
 
 func Generate(cfg Config) error {
@@ -176,15 +177,25 @@ func Generate(cfg Config) error {
 		}
 	}
 
-	fmt.Println("☕ Injecting custom Java configs and controllers...")
-	err = InjectJavaTemplates(destDir, cfg.PackageName, cfg.Language, cfg.Deps, hasWeb(cfg))
+	fmt.Println("☕ Injecting sample sources and configs...")
+	err = InjectSourceTemplates(destDir, cfg)
 	if err != nil {
-		log.Printf("Warning: Failed to inject Java templates: %v\n", err)
+		log.Printf("Warning: Failed to inject source templates: %v\n", err)
 	}
 
 	fmt.Println("⚙️  Wiring application.properties...")
 	if err = InjectProperties(destDir, cfg); err != nil {
 		log.Printf("Warning: Failed to inject properties: %v\n", err)
+	}
+
+	fmt.Println("🚀 Bootstrapping CI/CD pipelines (.github/workflows/build.yml)...")
+	if err = InjectCI(destDir, cfg); err != nil {
+		log.Printf("Warning: Failed to inject CI/CD pipeline: %v\n", err)
+	}
+
+	fmt.Println("☸️  Bootstrapping Kubernetes manifests (k8s/)...")
+	if err = InjectK8s(destDir, cfg); err != nil {
+		log.Printf("Warning: Failed to inject Kubernetes manifests: %v\n", err)
 	}
 
 	fmt.Printf("✅ Project unzipped to ./%s!\n", destDir)

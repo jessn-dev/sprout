@@ -16,7 +16,7 @@ var (
 	fName, fGroup, fArtifact, fPackage, fDesc         string
 	fBuild, fLanguage, fPackaging, fJava, fBoot, fTyp string
 	fDeps                                             []string
-	fGit                                              bool
+	fGit, fNoSamples                                  bool
 )
 
 var newCmd = &cobra.Command{
@@ -48,6 +48,7 @@ var newCmd = &cobra.Command{
 			JavaVersion: fJava,
 			ProjectType: fTyp,
 			Deps:        fDeps,
+			SkipSamples: fNoSamples,
 		}
 
 		if err := generator.ValidateConfig(cfg); err != nil {
@@ -81,6 +82,7 @@ func init() {
 	newCmd.Flags().StringVar(&fTyp, "type", "standard", "profile: standard|cloud|security (empty = none)")
 	newCmd.Flags().StringSliceVar(&fDeps, "deps", nil, "comma-separated dependency IDs (e.g. web,data-jpa,docker)")
 	newCmd.Flags().BoolVar(&fGit, "git", false, "run 'git init' in the generated project")
+	newCmd.Flags().BoolVar(&fNoSamples, "no-samples", false, "skip the sample HelloController")
 
 	rootCmd.AddCommand(newCmd)
 }

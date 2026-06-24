@@ -129,7 +129,9 @@ func CreateModuleWorkflow(md *generator.Metadata) {
 	dest := generator.FolderName(cfg)
 
 	if strategy == "strip_wrappers" || strategy == "inherit" {
-		wrappers := []string{"mvnw", "mvnw.cmd", "gradlew", "gradlew.bat", ".mvn", "gradle", ".gitignore", ".git"}
+		// We strip the build wrappers, git configs, and the nested .github folder
+		// (since GitHub Actions ignores workflows that aren't at the repository root).
+		wrappers := []string{"mvnw", "mvnw.cmd", "gradlew", "gradlew.bat", ".mvn", "gradle", ".gitignore", ".git", ".github"}
 		for _, w := range wrappers {
 			os.RemoveAll(filepath.Join(dest, w))
 		}

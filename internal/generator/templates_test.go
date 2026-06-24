@@ -50,10 +50,11 @@ func TestInjectJavaTemplates(t *testing.T) {
 	}
 	defer os.RemoveAll(tmpDir)
 
-	deps := []string{"data-redis", "web"}
-	err = InjectJavaTemplates(tmpDir, "com.example.test", "java", deps, true)
+	cfg := Config{Language: "java", PackageName: "com.example.test",
+		ProjectType: "standard", Deps: []string{"data-redis", "web"}}
+	err = InjectSourceTemplates(tmpDir, cfg)
 	if err != nil {
-		t.Fatalf("InjectJavaTemplates failed: %v", err)
+		t.Fatalf("InjectSourceTemplates failed: %v", err)
 	}
 
 	expectedPath := filepath.Join(tmpDir, "src", "main", "java", "com", "example", "test")
