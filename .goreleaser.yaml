@@ -1,0 +1,45 @@
+version: 2
+project_name: sprout
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - env:
+      - CGO_ENABLED=0
+    main: ./cmd/sprout
+    ldflags:
+      - -s -w
+      - -X github.com/jessn-dev/sprout/internal/version.Version={{.Version}}
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+archives:
+  - format: tar.gz
+    # Use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+checksum:
+  name_template: 'checksums.txt'
+brews:
+  - name: sprout
+    repository:
+      owner: jessn-dev
+      name: homebrew-tap
+      # GITHUB_TOKEN can't push to a different repo; use a PAT with repo scope.
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: "https://github.com/jessn-dev/sprout"
+    description: "The Ultimate Custom Spring Initializer CLI"
+    license: "MIT"
+    test: |
+      system "#{bin}/sprout --version"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
