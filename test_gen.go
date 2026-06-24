@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"sprout/internal/generator"
+	"github.com/jessn-dev/sprout/internal/generator"
 )
 
 func main() {

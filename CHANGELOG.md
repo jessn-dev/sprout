@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1] - 2026-06-24
+## [1.0.0] - 2026-06-24
 
 ### Added
 - **Future-Proof Java Support**: Added official offline fallback support for Java 25 and Java 26, and updated the generator to dynamically enable Virtual Threads (`spring.threads.virtual.enabled=true`) for *all* versions `>= 21` (instead of relying on a hardcoded list).

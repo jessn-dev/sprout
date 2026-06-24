@@ -58,10 +58,10 @@ func TestInjectJavaTemplates(t *testing.T) {
 	}
 
 	expectedPath := filepath.Join(tmpDir, "src", "main", "java", "com", "example", "test")
-	if _, err := os.Stat(filepath.Join(expectedPath, "HelloController.java")); os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(expectedPath, "web", "HelloController.java")); os.IsNotExist(err) {
 		t.Errorf("HelloController.java was not created")
 	}
-	if _, err := os.Stat(filepath.Join(expectedPath, "RedisConfig.java")); os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(expectedPath, "config", "RedisConfig.java")); os.IsNotExist(err) {
 		t.Errorf("RedisConfig.java was not created")
 	}
 }
